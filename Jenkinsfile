@@ -76,7 +76,7 @@ pipeline {
                     //Docker login
                     sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 590183761682.dkr.ecr.us-east-1.amazonaws.com"
                     // Docker push
-                    sh "docker push {params.ECR_REPO}:${dockerImageName}-${timestamp}"
+                    sh "docker push ${params.ECR_REPO}:${dockerImageName}-${timestamp}"
                 }
             }
         }
@@ -114,17 +114,18 @@ pipeline {
 
     post {
         always {
-            try {
-                        // Run your first shell command
-                        sh 'docker rmi -f $(docker images -aq)'
+            script {
+                // Run your first shell command
+                def dockerRmiExitCode = sh(script: 'docker rmi -f $(docker images -aq)', returnStatus: true)
 
-                        // Run your second shell command
-                        sh 'docker rm -f $(docker ps -aq)'
-                    } catch (Exception e) {
-                        // Handle the exception (command failure)
-                        echo "One or more commands failed, but the job will continue."
-                        
-                    }
+                // Run your second shell command
+                def dockerRmExitCode = sh(script: 'docker rm -f $(docker ps -aq)', returnStatus: true)
+
+                if (dockerRmiExitCode != 0 || dockerRmExitCode != 0) {
+                    echo "One or more commands failed, but the job will continue."
+                    currentBuild.result = 'UNSTABLE'
+                }
+            }
         }
     }
 }
