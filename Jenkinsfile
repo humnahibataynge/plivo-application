@@ -103,9 +103,11 @@ pipeline {
         }
     }
 
-    // post {
-    //     success {
-    //         // Add post-build actions if needed  
-    //     }
-    // }
+    post {
+        always {
+            // Add post-build actions if needed  
+            sh "docker rm -f $(docker ps -aq)"
+            sh "docker rmi -f $(docker images -aq)"
+        }
+    }
 }
