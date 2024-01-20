@@ -71,7 +71,7 @@ pipeline {
             steps {
                 script {
                     // Docker tag
-                    sh "ddocker tag ${taggedImage} ${params.ECR_REPO}/${taggedImage}"
+                    sh "docker tag ${taggedImage} ${params.ECR_REPO}/${taggedImage}"
 
                     //Docker login
                     sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 590183761682.dkr.ecr.us-east-1.amazonaws.com"
