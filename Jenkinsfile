@@ -49,7 +49,7 @@ pipeline {
                     gitBranch = env.BRANCH_NAME
                     dockerImageName = "${gitRepo}-${gitBranch}"
 
-                    sh "docker build -t ${dockerImageName}:${BUILD_NUMBER} ."
+                    sh "docker build --no-cache -t ${dockerImageName}:${BUILD_NUMBER} ."
                 }
             }
         }
@@ -105,7 +105,7 @@ pipeline {
 
     // post {
     //     success {
-    //         // Add post-build actions if needed
+    //         // Add post-build actions if needed  
     //     }
     // }
 }
