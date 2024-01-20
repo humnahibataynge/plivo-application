@@ -23,7 +23,7 @@ pipeline {
 
     parameters {
         string(defaultValue: '590183761682.dkr.ecr.us-east-1.amazonaws.com/plivo-application', name: 'ECR_REPO', description: 'ECR Repository')
-        string(defaultValue: '590183761682.dkr.ecr.us-east-1.amazonaws.com/plivo-application', name: 'HELM_ECR_REPO', description: 'Helm ECR Repository')
+        string(defaultValue: '590183761682.dkr.ecr.us-east-1.amazonaws.com/plivo-application-helms', name: 'HELM_ECR_REPO', description: 'Helm ECR Repository')
         string(defaultValue: 'dev-eks', name: 'K8S_CLUSTER', description: 'Kubernetes Cluster Name')
         string(defaultValue: 'us-east-1', name: 'AWS_REGION', description: 'AWS Region')
     }
