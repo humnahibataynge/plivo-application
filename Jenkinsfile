@@ -56,7 +56,7 @@ pipeline {
 
         stage('Unit-test') {
             steps {
-                sh 'echo "Run your test cases here..'
+                sh 'echo "Run your test cases here.."'
             }
         }
 
