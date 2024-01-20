@@ -103,9 +103,9 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            // Add post-build actions if needed
-        }
-    }
+    // post {
+    //     success {
+    //         // Add post-build actions if needed
+    //     }
+    // }
 }
