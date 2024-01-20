@@ -54,7 +54,7 @@ pipeline {
                     timestamp = currentBuild.startTimeInMillis.toString()
 
                     // Combine the timestamp with your image name
-                    taggedImage = "${dockerImageName}:${timestamp}"
+                    taggedImage = "${dockerImageName}:${dockerImageName}-${timestamp}"
 
                     sh "docker build --no-cache -t ${taggedImage} ."
                 }
@@ -71,12 +71,12 @@ pipeline {
             steps {
                 script {
                     // Docker tag
-                    sh "docker tag ${taggedImage} ${params.ECR_REPO}/${taggedImage}"
+                    sh "docker tag ${taggedImage} ${params.ECR_REPO}:${dockerImageName}-${timestamp}"
 
                     //Docker login
                     sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 590183761682.dkr.ecr.us-east-1.amazonaws.com"
                     // Docker push
-                    sh "docker push ${params.ECR_REPO}/${taggedImage}"
+                    sh "docker push {params.ECR_REPO}:${dockerImageName}-${timestamp}"
                 }
             }
         }
@@ -114,9 +114,17 @@ pipeline {
 
     post {
         always {
-            // Add post-build actions if needed  
-            sh 'docker rm -f $(docker ps -aq)'
-            sh 'docker rmi -f $(docker images -aq)'
+            try {
+                        // Run your first shell command
+                        sh 'docker rmi -f $(docker images -aq)'
+
+                        // Run your second shell command
+                        sh 'docker rm -f $(docker ps -aq)'
+                    } catch (Exception e) {
+                        // Handle the exception (command failure)
+                        echo "One or more commands failed, but the job will continue."
+                        
+                    }
         }
     }
 }
