@@ -51,7 +51,7 @@ pipeline {
                     gitBranch = env.BRANCH_NAME
                     dockerImageName = "${gitRepo}-${gitBranch}"
                     // Extract the timestamp from BUILD_ID
-                    timestamp = env.BUILD_ID.replaceAll("\\D", '')
+                    timestamp = currentBuild.startTimeInMillis.toString()
 
                     // Combine the timestamp with your image name
                     taggedImage = "${dockerImageName}:${timestamp}"
