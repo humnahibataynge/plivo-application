@@ -33,6 +33,8 @@ pipeline {
         gitRepo = ''
         gitBranch = ''
         dockerImageName = ''
+        timestamp = ''
+        taggedImage = ''    
     }
 
     stages {
@@ -48,8 +50,13 @@ pipeline {
                     gitRepo = env.GIT_URL.tokenize('/')[-1].replaceAll('\\.git', '')
                     gitBranch = env.BRANCH_NAME
                     dockerImageName = "${gitRepo}-${gitBranch}"
+                    // Extract the timestamp from BUILD_ID
+                    timestamp = env.BUILD_ID.replaceAll("\\D", '')
 
-                    sh "docker build --no-cache -t ${dockerImageName}:${BUILD_NUMBER} ."
+                    // Combine the timestamp with your image name
+                    taggedImage = "${dockerImageName}:${timestamp}"
+
+                    sh "docker build --no-cache -t ${taggedImage} ."
                 }
             }
         }
@@ -64,12 +71,12 @@ pipeline {
             steps {
                 script {
                     // Docker tag
-                    sh "docker tag ${dockerImageName}:${BUILD_NUMBER} ${params.ECR_REPO}:${BUILD_NUMBER}"
+                    sh "ddocker tag ${taggedImage} ${params.ECR_REPO}/${taggedImage}"
 
                     //Docker login
                     sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 590183761682.dkr.ecr.us-east-1.amazonaws.com"
                     // Docker push
-                    sh "docker push ${params.ECR_REPO}:${BUILD_NUMBER}"
+                    sh "docker push ${params.ECR_REPO}/${taggedImage}"
                 }
             }
         }
