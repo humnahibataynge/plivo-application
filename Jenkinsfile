@@ -106,7 +106,8 @@ pipeline {
                         sh "helm upgrade --install ${dockerImageName} ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml > helm_output"
                         sh "tail -n 2 helm_output > run-command"
                         sh "sh run-command"
-
+                        def App_URL = sh(script: "sh run-command", returnStdout: true).trim()
+                        sidebar("Application URL", "<a href='${helmOutput}'>View Helm Output</a>")
                         sh "kubectl get svc"
                         // sh '''export SERVICE_IP=$(kubectl get svc --namespace default ${dockerImageName} --template '{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}')'''
                         // sh "echo http://$SERVICE_IP"
