@@ -104,7 +104,7 @@ pipeline {
                 script {
                         sh """
                             aws eks update-kubeconfig --name ${params.K8S_CLUSTER} --region ${params.AWS_REGION}
-                            // helm upgrade --install your-release-name ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml
+                            #helm upgrade --install your-release-name ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml
                         """
                 }
             }
