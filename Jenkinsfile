@@ -119,7 +119,7 @@ pipeline {
     post {
         always {
             script {
-                    sh " rm -rf $(pwd)/*"
+                    sh  "rm -rf \$(pwd)/*"
             }
         }
     }
