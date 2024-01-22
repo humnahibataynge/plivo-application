@@ -116,7 +116,7 @@ pipeline {
     post {
         always {
             script {
-                    sh 'rm -rf /home/ec2-user/worspace'
+                    sh 'rm -rf /home/ec2-user/workspace'
             }
         }
     }
