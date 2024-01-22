@@ -84,7 +84,8 @@ pipeline {
         stage('Helm update') {
             steps {
                 script {
-                    sh 'docker run --rm -v $(pwd):/$(pwd):rw mikefarah/yq:4 eval --inplace \'.image.tag = "${dockerImageName}-${timestamp}"\' $(pwd)/plivo-webapp/values.yaml'
+                    // sh 'docker run --rm -v $(pwd):/$(pwd):rw mikefarah/yq:4 eval --inplace \'.image.tag = "${dockerImageName}-${timestamp}"\' $(pwd)/plivo-webapp/values.yaml'
+                    sh "docker run --rm -v \$(pwd):/\$(pwd):rw mikefarah/yq:4 eval --inplace '.image.tag = \"${dockerImageName}-${timestamp}\"' \$(pwd)/plivo-webapp/values.yaml"
                 }
             }
         }
