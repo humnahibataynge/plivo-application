@@ -29,7 +29,7 @@ pipeline {
     }
 
     environment {
-        HELM_CHART_PATH = "path/to/helm/chart"
+        HELM_CHART_PATH = "plivo-webapp"
         gitRepo = ''
         gitBranch = ''
         dockerImageName = ''
@@ -84,7 +84,7 @@ pipeline {
         stage('Helm update') {
             steps {
                 script {
-                    sh 'docker run --rm -v "$(pwd):/workdir" mikefarah/yq yq write -i /workdir/path/to/values.yaml image.tag "${BUILD_NUMBER}"'
+                    sh 'docker run --rm -v "$(pwd):/workdir" mikefarah/yq yq write -i /workdir/plivo-webapp/values.yaml image.tag "${dockerImageName}-${timestamp}"'
                 }
             }
         }
