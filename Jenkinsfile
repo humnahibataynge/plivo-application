@@ -102,7 +102,7 @@ pipeline {
         stage('Helm deploy') {
             steps {
                 script {
-                        sh 'aws eks update-kubeconfig --name ${params.K8S_CLUSTER} --region ${params.AWS_REGION}'
+                        sh "aws eks update-kubeconfig --name ${params.K8S_CLUSTER} --region ${params.AWS_REGION}"
                         sh 'helm upgrade --install ${dockerImageName} ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml'
                         // sh """
                             
