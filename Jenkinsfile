@@ -84,13 +84,7 @@ pipeline {
         stage('Helm update') {
             steps {
                 script {
-                    def valuesYamlPath = "$(pwd)/plivo-webapp/values.yaml"
-
-                    // Docker run command
-                    sh """
-                        docker run --rm -v ${valuesYamlPath}:/workdir/values.yaml \
-                        mikefarah/yq:4 sh -c 'yq eval ".image.tag = \"new-tag\"" -i /workdir/values.yaml'
-                    """
+                    sh 'docker run --rm -v $(pwd):/workdir mikefarah/yq:4 eval --inplace \'.image.tag = "new-tag"\' $(pwd)/plivo-webapp/values.yaml'
                 }
             }
         }
