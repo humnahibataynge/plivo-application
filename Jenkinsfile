@@ -86,7 +86,7 @@ pipeline {
                 script {
                     sh """
                         docker run --rm -v "\$(pwd)/plivo-webapp/values.yaml:/workdir/values.yaml" \
-                        mikefarah/yq:4 sh -c "yq eval '.image.tag = \"new-tag\"' -i /workdir/values.yaml"
+                        mikefarah/yq:4 yq eval '.image.tag = "new-tag"' -i /workdir/values.yaml
                     """
 
                 }
