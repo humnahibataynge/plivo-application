@@ -16,8 +16,6 @@
 //     helm deploy: update the kubeconfig file for the eks cluster named dev-eks, and region us-east-1, do the helm deploy in the cluster.
 
 
-
-
 pipeline {
     agent { label 'node-one' }
 
@@ -107,10 +105,24 @@ pipeline {
                         sh "tail -n 2 helm_output > run-command"
                         sh "sh run-command"
                         def App_URL = sh(script: "sh run-command", returnStdout: true).trim()
-                        sidebar("Application URL", "<a href='${helmOutput}'>View Helm Output</a>")
-                        sh "kubectl get svc"
-                        // sh '''export SERVICE_IP=$(kubectl get svc --namespace default ${dockerImageName} --template '{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}')'''
-                        // sh "echo http://$SERVICE_IP"
+                        
+                        // Create a simple HTML page with a link
+                    def htmlContent = """
+                        <html>
+                            <head>
+                                <title>Application</title>
+                            </head>
+                            <body>
+                                <p><a href="${App_URL}" target="_blank">Go to Application</a></p>
+                            </body>
+                        </html>
+                    """
+
+                    // Write the HTML content to a file
+                    writeFile(file: 'helm_output.html', text: htmlContent)
+
+                    // Publish the HTML report as an artifact
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '.', reportFiles: 'helm_output.html', reportName: 'Application URL'])
                         
                 }
             }
