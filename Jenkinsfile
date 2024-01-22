@@ -116,16 +116,7 @@ pipeline {
     post {
         always {
             script {
-                // Run your first shell command
-                def dockerRmiExitCode = sh(script: 'docker rmi -f $(docker images -aq)', returnStatus: true)
-
-                // Run your second shell command
-                def dockerRmExitCode = sh(script: 'docker rm -f $(docker ps -aq)', returnStatus: true)
-
-                if (dockerRmiExitCode != 0 || dockerRmExitCode != 0) {
-                    echo "One or more commands failed, but the job will continue."
-                    currentBuild.result = 'UNSTABLE'
-                }
+                    sh 'rm -rf /home/ec2-user/worspace'
             }
         }
     }
