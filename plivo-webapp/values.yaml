@@ -1,10 +1,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: 590183761682.dkr.ecr.us-east-1.amazonaws.com/plivo-application
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "plivo-application-master-1705825240848"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -36,8 +36,9 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
+  targetPort: 80
 
 ingress:
   enabled: false
