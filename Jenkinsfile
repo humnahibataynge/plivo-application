@@ -104,6 +104,7 @@ pipeline {
                 script {
                         sh "aws eks update-kubeconfig --name ${params.K8S_CLUSTER} --region ${params.AWS_REGION}"
                         sh "helm upgrade --install ${dockerImageName} ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml"
+                        sh "kubectl get svc"
                         // sh """
                             
                         //     helm upgrade --install ${dockerImageName} ${HELM_CHART_PATH} -f $HELM_CHART_PATH/values.yaml
