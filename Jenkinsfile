@@ -104,9 +104,9 @@ pipeline {
                 script {
                         sh """
                             aws eks update-kubeconfig --name ${params.K8S_CLUSTER} --region ${params.AWS_REGION}
-                            helm upgrade --install ${dockerImageName}-${env.BUILD_NUMBER} ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml
-                            export SERVICE_IP=$(kubectl get svc --namespace default ${dockerImageName}-${env.BUILD_NUMBER} --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}")
-                            echo http://$SERVICE_IP
+                            helm upgrade --install ${dockerImageName} ${HELM_CHART_PATH} -f ${HELM_CHART_PATH}/values.yaml
+                            #export SERVICE_IP=$(kubectl get svc --namespace default ${dockerImageName} --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}")
+                            #echo http://$SERVICE_IP
                         """
                 }
             }
