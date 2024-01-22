@@ -119,7 +119,7 @@ pipeline {
     post {
         always {
             script {
-                    sh 'rm -rf /home/ec2-user/workspace'
+                    sh " rm -rf $(pwd)/*"
             }
         }
     }
