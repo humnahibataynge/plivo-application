@@ -84,7 +84,7 @@ pipeline {
         stage('Helm update') {
             steps {
                 script {
-                    sh 'docker run --rm -v "$(pwd):/workdir" mikefarah/yq yq write -i /workdir/plivo-webapp/values.yaml image.tag "${dockerImageName}-${timestamp}"'
+                    sh 'docker run --rm -v "$(pwd):/$(pwd):rw" mikefarah/yq yq write -i "$(pwd)/plivo-webapp/values.yaml" image.tag "${dockerImageName}-${timestamp}"'
                 }
             }
         }
